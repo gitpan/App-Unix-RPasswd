@@ -1,5 +1,8 @@
 Revision history for App-Unix-RPasswd
 
 0.3    20110316
-        First CPAN release on an unsuspecting world.
+       - First CPAN release on an unsuspecting world.
+0.31   20110318
+       - POD fixes.
+       - Migration to Module::Install for easier building.
 

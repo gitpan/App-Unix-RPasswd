@@ -1,10 +1,10 @@
-#!/home/claudio/lib/perlbrew/perls/perl-5.12.3/bin/perl
+#!/usr/bin/env perl
 
 #########################################################
 ###                                                   ###
 ### Program to change passwords on selected machines. ###
 ### Send bugs to Claudio Ramirez, nxadm@cpan.org      ###
-###						      ###
+###						      						  ###
 #########################################################
 
 ### Pragmas and Modules ###
@@ -16,7 +16,7 @@ use File::Basename qw(basename);
 use Parallel::ForkManager;
 
 ### Variables ###
-our $VERSION = '0.3';
+our $VERSION = '0.31';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 my @ssh     = ( 'ssh', '-t' );    # ssh will be found in the PATH
@@ -276,7 +276,7 @@ fast (in parallel) and secure (SSH) way.
 
 =head1 VERSION
 
-Version 0.3
+Version 0.31
 
 =head1 SYNOPSIS
 
@@ -307,25 +307,25 @@ From a security point of view, it is strongly advised to supply '-' as the base
 salt or password on the command line. The program will then ask interactively 
 for the base salt or password. 
 
-Usage:
-    rpasswd -u <user> -p <password> <server(s)>
-    rpasswd -g -b <base salt> -date <YYYYMMDD> <server(s)>
+	Usage:
+		rpasswd -u <user> -p <password> <server(s)>
+		rpasswd -g -b <base salt> -date <YYYYMMDD> <server(s)>
 
-Options:
-    --generate_only|-g: (re-)generate the salted password.
-    --user|-u:          remote user name.
-    --password|-p:      new password for remote user.
-    --base|-b:          base salt for encryption.
-    --date|-d:          date in YYYYMMDD format (defaults to today)*.
-    --ssh_args|-a:      settings for the ssh client (man ssh)*.
-    --reruns|-r:        reruns for failed targets (defaults to 0)*.
-    --sessions|-s:      simultaneous sessions (defaults to 5)*.
-    --timeout|-t:       session timeout (defaults to 20 seconds)*.
-    --debug:            prints debug output*.
-    --help|-h:          print this help screen.
-    --version|-v:       prints the version number.
+	Options:
+		--generate_only|-g: (re-)generate the salted password.
+		--user|-u:          remote user name.
+		--password|-p:      new password for remote user.
+		--base|-b:          base salt for encryption.
+		--date|-d:          date in YYYYMMDD format*.
+		--ssh_args|-a:      settings for the ssh client*.
+		--reruns|-r:        reruns for failed targets*.
+		--sessions|-s:      simultaneous sessions*.
+		--timeout|-t:       session timeout*.
+		--debug:            prints debug output*.
+		--help|-h:          print this help screen.
+		--version|-v:       prints the version number.
 
-    *: optional
+		*: optional
 
 =head1 PARAMETERS
 
@@ -392,6 +392,16 @@ Claudio Ramirez, C<< <nxadm at cpan.org> >>
 
 =head1 BUGS
 
+The module DateTime is a dependency. This module will fail to install if 
+Module::Build (>= 0.3601) is not installed. Install it first:
+	
+	cpan Module::Build
+	
+Or if App::cpanminus installed:
+
+	cpanm Module::Build
+	
+
 Please report any bugs or feature requests to C<bug-App-Unix-RPasswd at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=App-Unix-RPasswd>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
@@ -431,7 +441,7 @@ L<http://search.cpan.org/dist/App-Unix-RPasswd/>
 
 =head1 ACKNOWLEDGEMENTS
 
-The following non-core modules were used:
+The following non-core modules were used (excluding dependencies of these modules):
 
 =over 2
 
@@ -441,14 +451,17 @@ L<http://search.cpan.org/dist/Crypt-PasswdMD5/>
 =item * DateTime
 L<http://search.cpan.org/dist/DateTime/>
 
-=item * List::MoreUtils
-L<http://search.cpan.org/dist/List-MoreUtils/>
+=item * Expect
+L<http://search.cpan.org/dist/Expect/>
 
 =item * Moose
 L<http://search.cpan.org/dist/Moose/>
 
 =item * namespace::autoclean
 L<http://search.cpan.org/dist/namespace-autoclean/>
+
+=item * Parallel::ForkManager
+L<http://search.cpan.org/dist/Parallel-ForkManager/>
 
 =back
 

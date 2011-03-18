@@ -1,39 +1,33 @@
 ---
-abstract: "Change passwords on UNIX and UNIX-like servers on a simple, \nfast (in parallel) and secure (SSH) way."
+abstract: 'Change passwords on UNIX and UNIX-like servers on a simple, '
 author:
-  - 'Claudio Ramirez <nxadm@cpan.org>'
+  - 'Claudio Ramirez, C<< <nxadm at cpan.org> >>'
 build_requires:
-  Test::More: 0
+  ExtUtils::MakeMaker: 6.42
+  Test::More: 0.42
 configure_requires:
-  Module::Build: 0.38
-dynamic_config: 1
-generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.110580'
+  ExtUtils::MakeMaker: 6.42
+distribution_type: module
+generated_by: 'Module::Install version 1.00'
 license: gpl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
 name: App-Unix-RPasswd
-provides:
-  App::Unix::RPasswd:
-    file: lib/App/Unix/RPasswd.pm
-    version: 0.3
-  App::Unix::RPasswd::Connection:
-    file: lib/App/Unix/RPasswd/Connection.pm
-    version: 0.3
-  App::Unix::RPasswd::SaltedPasswd:
-    file: lib/App/Unix/RPasswd/SaltedPasswd.pm
-    version: 0.3
+no_index:
+  directory:
+    - inc
+    - lib/App/Unix/RPasswd
+    - t
 requires:
   Crypt::PasswdMD5: 0
   DateTime: 0
   Expect: 0
-  File::Basename: 0
-  Getopt::Long: 0
   List::MoreUtils: 0
   Moose: 0
   Parallel::ForkManager: 0
   namespace::autoclean: 0
-  perl: v5.10.0
+  perl: 5.10.0
 resources:
   license: http://opensource.org/licenses/gpl-license.php
-version: 0.3
+version: 0.31
