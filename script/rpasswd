@@ -17,7 +17,7 @@ use File::Basename qw(basename);
 use Parallel::ForkManager;
 
 ### Variables ###
-our $VERSION = '0.32';
+our $VERSION = '0.33';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 my @ssh     = ( 'ssh', '-t' );    # ssh will be found in the PATH
@@ -66,7 +66,7 @@ if ( !$cli{generate_only} ) {
 }
 
 my $salt_password;
-if ( $cli{base} ) {
+if ( defined $cli{base} ) {
     require App::Unix::RPasswd::SaltedPasswd;
     $salt_password =
       App::Unix::RPasswd::SaltedPasswd->new( salt => $cli{base}, );
@@ -100,7 +100,7 @@ sub pexec {
     for my $server (@servers) {
         $pfm->start() and next;
         my $error;
-       if ( $cli{base} ) {
+       if ( defined $cli{base} ) {
         	$cli{password} = $salt_password->generate( $server . $cli{date} . $server ); 
        }
 
@@ -131,7 +131,7 @@ sub pexec {
 sub check_params {
     my $status = 1;
     use List::MoreUtils ('uniq');
-    @servers = uniq map { s/\s//g; $_ } @ARGV;           # Cleanup serverlist
+    @servers = uniq grep { $_ ne '' } map { s/\s//g; $_ } @ARGV;  # Cleanup serverlist
 
     # all modes
     if ( scalar @servers == 0 ) {
@@ -147,7 +147,7 @@ sub check_params {
                 say "Parameter $key is invalid in this mode.";
             }
         }
-        if ( !exists $cli{base} ) {
+        if ( !defined $cli{base} ) {
             $status = 0;
             say "Parameter base is required in this mode.";
         }
@@ -157,7 +157,7 @@ sub check_params {
     else {
 
         # conn mode
-        if ( !$cli{user} ) { $status = 0; say 'Parameter user is mandatory.'; }
+        if ( ! defined $cli{user} ) { $status = 0; say 'Parameter user is mandatory.'; }
         if ( !defined $cli{password} and !defined $cli{base} ) {
             $status = 0;
             say 'You need to specify password or base.';
@@ -197,7 +197,7 @@ sub check_params {
             $status = 0;
             say 'Supply parameter date in a YYYYMMDD format (e.g. 20101123).';
         }
-        elsif ( !$cli{date} ) {
+        elsif ( !defined $cli{date} ) {
             $cli{date} = $rpasswd->date;
         }
         if ( $cli{base} eq '-' ) {
@@ -277,7 +277,7 @@ fast (in parallel) and secure (SSH) way.
 
 =head1 VERSION
 
-Version 0.32
+Version 0.33
 
 =head1 SYNOPSIS
 
@@ -306,7 +306,8 @@ servers (mandatory) are valid parameters.
 
 From a security point of view, it is strongly advised to supply '-' as the base
 salt or password on the command line. The program will then ask interactively 
-for the base salt or password. 
+for the base salt or password. This program requires a ssh-key based remote 
+root access.
 
 	Usage:
 		rpasswd -u <user> -p <password> <server(s)>

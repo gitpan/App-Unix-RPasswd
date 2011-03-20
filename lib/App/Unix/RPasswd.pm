@@ -5,7 +5,7 @@ use feature ':5.10';
 use Mouse;
 use POSIX qw/strftime/;
 
-our $VERSION = '0.32';
+our $VERSION = '0.33';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'date' => (
@@ -61,7 +61,7 @@ fast (in parallel) and secure (SSH) way.
 
 =head1 VERSION
 
-Version 0.32
+Version 0.33
 
 =head1 SYNOPSIS
 
@@ -90,7 +90,8 @@ servers (mandatory) are valid parameters.
 
 From a security point of view, it is strongly advised to supply '-' as the base
 salt or password on the command line. The program will then ask interactively 
-for the base salt or password. 
+for the base salt or password. This program requires a ssh-key based remote 
+root access.
 
 	Usage:
 		rpasswd -u <user> -p <password> <server(s)>

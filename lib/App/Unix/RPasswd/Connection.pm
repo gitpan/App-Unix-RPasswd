@@ -5,7 +5,7 @@ use feature ':5.10';
 use Mouse;
 use Expect;
 
-our $VERSION = '0.32';
+our $VERSION = '0.33';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'user' => (

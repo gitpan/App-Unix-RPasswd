@@ -1,11 +1,14 @@
 Revision history for App-Unix-RPasswd
 
-0.3    20110316
-       - First CPAN release on an unsuspecting world.
-0.31   20110318
-       - POD fixes.
-       - Migration to Module::Install for easier building.
-0.32   20110320
-       - Removal of namespace::autoclean dependency for easier building.
-	   - Removal of DateTime dependency for easier building.
-	   - Migration to Mouse for easier building and size.
+0.3    	20110316
+		- First CPAN release on an unsuspecting world.
+0.31   	20110318
+		- POD fixes.
+		- Migration to Module::Install for easier building.
+0.32	20110320
+		- Removal of namespace::autoclean dependency for easier building.
+		- Removal of DateTime dependency for easier building.
+		- Migration to Mouse for easier building and size.
+0.33	20110321
+		- Fix cornercase base == 0
+		- Fix cornercase servername eq ''
