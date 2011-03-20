@@ -5,4 +5,7 @@ Revision history for App-Unix-RPasswd
 0.31   20110318
        - POD fixes.
        - Migration to Module::Install for easier building.
-
+0.32   20110320
+       - Removal of namespace::autoclean dependency for easier building.
+	   - Removal of DateTime dependency for easier building.
+	   - Migration to Mouse for easier building and size.

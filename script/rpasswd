@@ -10,13 +10,14 @@
 ### Pragmas and Modules ###
 use strict;
 use warnings;
+use 5.010000;
 use feature ':5.10';
 use Getopt::Long;
 use File::Basename qw(basename);
 use Parallel::ForkManager;
 
 ### Variables ###
-our $VERSION = '0.31';
+our $VERSION = '0.32';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 my @ssh     = ( 'ssh', '-t' );    # ssh will be found in the PATH
@@ -99,16 +100,17 @@ sub pexec {
     for my $server (@servers) {
         $pfm->start() and next;
         my $error;
-        $cli{password} //=
-          $salt_password->generate( $server . $cli{date} . $server )
-          ;    #/
-        if ( $cli{debug} and $cli{base} ) {
-            say 'Generated password: ' . $cli{password} . " ($server).";
-        }
+       if ( $cli{base} ) {
+        	$cli{password} = $salt_password->generate( $server . $cli{date} . $server ); 
+       }
 
-        if ( $cli{generate_only} ) { say $cli{password} . " ($server)" }
-        else {
-            say "Running on $server...";
+        if ( $cli{generate_only} ) { 
+		say $cli{password} . " ($server)"; 
+		}
+		else { 
+			my $msg = ($cli{debug}) ? "Running on $server with password $cli{password}..."
+									: "Running on $server...";
+            say $msg;
             my $status = eval {
                 local $SIG{ALRM} = sub {
                     say "Timeout exceeded for $server.";
@@ -118,14 +120,12 @@ sub pexec {
                 return $conn->run( $server, $cli{password}, $cli{debug} );
                 alarm 0;
             };
-            if ( !$status ) { $error = $server; }
-        }
+            if ( !$status ) { $error = $server; }}
         $pfm->finish( 0, \$error );
     }
-    @errors = pexec(@errors) unless ( $run > $cli{reruns} );    # Recursive
     $pfm->wait_all_children;
     say "\nRun $run done.\n" . '_' x 80 . "\n";
-    return @errors;
+	return ( $run <= $cli{reruns} ) ? pexec(@errors) : @errors; # recursive
 }
 
 sub check_params {
@@ -151,7 +151,7 @@ sub check_params {
             $status = 0;
             say "Parameter base is required in this mode.";
         }
-        $cli{reruns} = $runs;
+        $cli{reruns} = 0;
         return $status if !$status;
     }
     else {
@@ -184,10 +184,10 @@ sub check_params {
         if ( defined $cli{reruns} ) {
             if ( $cli{reruns} > 98 ) {
                 $status = 0;
-                say 'Less than 100 retries allowed. Let be raisonable.';
+                say 'Less than 99 retries allowed. Let\'s be raisonable.';
             }
-            else { $cli{reruns} = $runs }
         }
+         else { $cli{reruns} = 0 }
     }
 
     if ( $status == 1 and defined $cli{base} ) {
@@ -261,7 +261,8 @@ servers (mandatory) are valid parameters.
 From a security point of view, it is strongly advised to supply '-' as the base
 salt or password on the command line. The program will then ask interactively 
 for the base salt or password. 
-Bugs to $AUTHOR.
+
+$AUTHOR, http://search.cpan.org/dist/App-Unix-RPasswd 
 EOL
 }
 
@@ -276,7 +277,7 @@ fast (in parallel) and secure (SSH) way.
 
 =head1 VERSION
 
-Version 0.31
+Version 0.32
 
 =head1 SYNOPSIS
 
@@ -392,16 +393,6 @@ Claudio Ramirez, C<< <nxadm at cpan.org> >>
 
 =head1 BUGS
 
-The module DateTime is a dependency. This module will fail to install if 
-Module::Build (>= 0.3601) is not installed. Install it first:
-	
-	cpan Module::Build
-	
-Or if App::cpanminus installed:
-
-	cpanm Module::Build
-	
-
 Please report any bugs or feature requests to C<bug-App-Unix-RPasswd at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=App-Unix-RPasswd>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
@@ -448,17 +439,14 @@ The following non-core modules were used (excluding dependencies of these module
 =item * Crypt::PasswdMD5
 L<http://search.cpan.org/dist/Crypt-PasswdMD5/>
 
-=item * DateTime
-L<http://search.cpan.org/dist/DateTime/>
-
 =item * Expect
 L<http://search.cpan.org/dist/Expect/>
 
-=item * Moose
-L<http://search.cpan.org/dist/Moose/>
+=item * List::MoreUtils
+L<http://search.cpan.org/dist/List-MoreUtils/>
 
-=item * namespace::autoclean
-L<http://search.cpan.org/dist/namespace-autoclean/>
+=item * Mouse
+L<http://search.cpan.org/dist/Mouse/>
 
 =item * Parallel::ForkManager
 L<http://search.cpan.org/dist/Parallel-ForkManager/>

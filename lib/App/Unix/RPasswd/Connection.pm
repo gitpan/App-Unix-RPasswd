@@ -1,12 +1,11 @@
 package App::Unix::RPasswd::Connection;
 # This is an internal module of App::Unix::RPasswd
 
-use namespace::autoclean;
 use feature ':5.10';
-use Moose;
+use Mouse;
 use Expect;
 
-our $VERSION = '0.31';
+our $VERSION = '0.32';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'user' => (
@@ -61,6 +60,6 @@ sub _construct_cmd {
     return @command;
 }
 
-no Moose;
+no Mouse;
 __PACKAGE__->meta->make_immutable;
 1;

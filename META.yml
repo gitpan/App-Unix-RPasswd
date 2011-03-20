@@ -21,13 +21,11 @@ no_index:
     - t
 requires:
   Crypt::PasswdMD5: 0
-  DateTime: 0
   Expect: 0
   List::MoreUtils: 0
-  Moose: 0
+  Mouse: 0
   Parallel::ForkManager: 0
-  namespace::autoclean: 0
   perl: 5.10.0
 resources:
   license: http://opensource.org/licenses/gpl-license.php
-version: 0.31
+version: 0.32

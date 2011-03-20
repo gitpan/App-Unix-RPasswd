@@ -1,13 +1,12 @@
 package App::Unix::RPasswd::SaltedPasswd;
 # This is an internal module of App::Unix::RPasswd
 
-use namespace::autoclean;
 use feature ':5.10';
-use Moose;
+use Mouse;
 use Crypt::PasswdMD5 ('unix_md5_crypt');
 use List::MoreUtils  ('zip');
 
-our $VERSION = '0.31';
+our $VERSION = '0.32';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'salt' => (
@@ -36,6 +35,6 @@ sub _encode_string {
     return reverse $passwd;
 }
 
-no Moose;
+no Mouse;
 __PACKAGE__->meta->make_immutable;
 1;

@@ -1,16 +1,17 @@
 package App::Unix::RPasswd;
 
-use namespace::autoclean;
+use 5.010000;
 use feature ':5.10';
-use Moose;
+use Mouse;
+use POSIX qw/strftime/;
 
-our $VERSION = '0.31';
+our $VERSION = '0.32';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'date' => (
     is       => 'ro',
     isa      => 'Int',
-    default  => sub { require DateTime; DateTime->now()->ymd(''); },
+    default  => sub { strftime "%Y%m%d", localtime; },
     lazy     => 1,
     init_arg => undef,
 );
@@ -46,7 +47,7 @@ sub ask_key {
     return $input[0];
 }
 
-no Moose;
+no Mouse;
 __PACKAGE__->meta->make_immutable;
 1;
 __END__
@@ -60,7 +61,7 @@ fast (in parallel) and secure (SSH) way.
 
 =head1 VERSION
 
-Version 0.31
+Version 0.32
 
 =head1 SYNOPSIS
 
@@ -176,16 +177,6 @@ Claudio Ramirez, C<< <nxadm at cpan.org> >>
 
 =head1 BUGS
 
-The module DateTime is a dependency. This module will fail to install if 
-Module::Build (>= 0.3601) is not installed. Install it first:
-	
-	cpan Module::Build
-	
-Or if App::cpanminus installed:
-
-	cpanm Module::Build
-
-	
 Please report any bugs or feature requests to C<bug-App-Unix-RPasswd at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=App-Unix-RPasswd>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
@@ -232,17 +223,14 @@ The following non-core modules were used:
 =item * Crypt::PasswdMD5
 L<http://search.cpan.org/dist/Crypt-PasswdMD5/>
 
-=item * DateTime
-L<http://search.cpan.org/dist/DateTime/>
-
 =item * Expect
 L<http://search.cpan.org/dist/Expect/>
 
-=item * Moose
-L<http://search.cpan.org/dist/Moose/>
+=item * List::MoreUtils
+L<http://search.cpan.org/dist/List-MoreUtils/>
 
-=item * namespace::autoclean
-L<http://search.cpan.org/dist/namespace-autoclean/>
+=item * Mouse
+L<http://search.cpan.org/dist/Mouse/>
 
 =item * Parallel::ForkManager
 L<http://search.cpan.org/dist/Parallel-ForkManager/>
