@@ -3,15 +3,40 @@ package App::Unix::RPasswd;
 use 5.010000;
 use feature ':5.10';
 use Mouse;
-use POSIX qw/strftime/;
+use Parallel::ForkManager;
+use App::Unix::RPasswd::Connection;
+use App::Unix::RPasswd::SaltedPasswd;
 
-our $VERSION = '0.33';
+our $VERSION = '0.34';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
-has 'date' => (
+has 'args' => (
     is       => 'ro',
-    isa      => 'Int',
-    default  => sub { strftime "%Y%m%d", localtime; },
+    isa      => 'HashRef',
+    required => 1,
+);
+
+has '_connection_obj' => (
+    is      => 'ro',
+    does    => 'App::Unix::RPasswd::Connection',
+    default => sub {
+        my $self = shift;
+        App::Unix::RPasswd::Connection->new(
+            user     => $self->args->{user},
+            ssh_args => $self->args->{ssh},
+        );
+    },
+    lazy     => 1,
+    init_arg => undef,
+);
+
+has '_saltedpasswd_obj' => (
+    is      => 'ro',
+    does    => 'App::Unix::RPasswd::SaltedPasswd',
+    default => sub {
+        my $self = shift;
+        App::Unix::RPasswd::SaltedPasswd->new( salt => $self->args->{base} );
+    },
     lazy     => 1,
     init_arg => undef,
 );
@@ -26,7 +51,7 @@ sub ask_key {
     my $first_time = 1;
     print $msg[$counter];
     my @input;
-    system('/bin/stty', '-echo');
+    system( '/bin/stty', '-echo' );
 
     while (<STDIN>) {
         chomp;
@@ -47,6 +72,72 @@ sub ask_key {
     return $input[0];
 }
 
+sub pexec {
+    my $self    = shift;
+    my @servers = @_;
+    state $run++;
+    my @errors;
+
+    # Setup forks
+    my $pfm = Parallel::ForkManager->new( $self->args->{sim} );
+
+    # Retrieve status
+    $pfm->run_on_finish(
+        sub {
+            my ( undef, undef, undef, undef, undef, $dataref ) = @_;
+            if ( defined $dataref and defined $$dataref ) {
+                push @errors, $$dataref;
+            }
+        }
+    );
+
+    for my $server (@servers) {
+        if (@servers) {
+            $pfm->start() and next;
+            my $error;
+            if ( defined $self->args->{base} ) {
+                $self->args->{password} =
+                  $self->_saltedpasswd_obj->generate(
+                    $server . $self->args->{date} . $server );
+            }
+
+            if ( $self->args->{generate_only} ) {
+                say $self->args->{password} . " ($server)";
+            }
+            else {
+                my $msg =
+                  ( $self->args->{debug} )
+                  ? 'Running on ' 
+                  . $server
+                  . ' with password \''
+                  . $self->args->{password} . '\'...'
+                  : "Running on $server...";
+                say $msg;
+                my $status = eval {
+                    local $SIG{ALRM} = sub {
+                        say "Timeout exceeded for $server.";
+                        die "Timeout exceeded\n";    # NB: \n required
+                    };
+                    alarm $self->args->{timeout};
+                    return $self->_connection_obj->run(
+                        $server,
+                        $self->args->{password},
+                        $self->args->{debug}
+                    );
+                    alarm 0;
+                };
+                if ( !$status ) { $error = $server; }
+            }
+            $pfm->finish( 0, \$error );
+        }
+    }
+    $pfm->wait_all_children;
+    say "\nRun $run done.\n" . '_' x 80 . "\n";
+    return ( scalar @errors and $run <= $self->args->{reruns} )
+      ? $self->pexec(@errors)
+      : @errors;    # recursive
+}
+
 no Mouse;
 __PACKAGE__->meta->make_immutable;
 1;
@@ -61,11 +152,11 @@ fast (in parallel) and secure (SSH) way.
 
 =head1 VERSION
 
-Version 0.33
+Version 0.34
 
 =head1 SYNOPSIS
 
-App::Unix::RPasswd is an application for changing passwords on UNIX and 
+App::Unix::RPasswd (remote passwd) is an application for changing passwords on UNIX and 
 UNIX-like servers on a simple, fast (in parallel) and secure (SSH) way. 
 A salt-based retrievable "random" password generator, tied to the supplied 
 server names and date, is included. 

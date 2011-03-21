@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 5;
+use Test::More tests => 7;
 
 sub not_in_file_ok {
     my ($filename, %regex) = @_;
@@ -48,9 +48,11 @@ TODO: {
     "placeholder date/time"       => qr(Date/time)
   );
 
+  module_boilerplate_ok('script/rpasswd');  
   module_boilerplate_ok('lib/App/Unix/RPasswd.pm');
   module_boilerplate_ok('lib/App/Unix/RPasswd/Connection.pm');
   module_boilerplate_ok('lib/App/Unix/RPasswd/SaltedPasswd.pm');
+  module_boilerplate_ok('lib/App/Unix/RPasswd/UI/Cli.pm');
 
 
 }

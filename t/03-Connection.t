@@ -8,4 +8,4 @@ my $conn = App::Unix::RPasswd::Connection->new(
 );
 
 isa_ok( $conn, 'App::Unix::RPasswd::Connection' );
-can_ok( $conn, ( 'run', '_construct_cmd' ) );
+can_ok( $conn, ( 'run') );

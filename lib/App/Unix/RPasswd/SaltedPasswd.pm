@@ -6,7 +6,7 @@ use Mouse;
 use Crypt::PasswdMD5 ('unix_md5_crypt');
 use List::MoreUtils  ('zip');
 
-our $VERSION = '0.33';
+our $VERSION = '0.34';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'salt' => (

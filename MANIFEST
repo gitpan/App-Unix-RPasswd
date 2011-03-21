@@ -11,6 +11,7 @@ inc/Module/Install/WriteAll.pm
 lib/App/Unix/RPasswd.pm
 lib/App/Unix/RPasswd/Connection.pm
 lib/App/Unix/RPasswd/SaltedPasswd.pm
+lib/App/Unix/RPasswd/UI/Cli.pm
 LICENSE
 Makefile.PL
 MANIFEST
