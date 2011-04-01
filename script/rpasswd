@@ -4,7 +4,7 @@
 ###                                                   ###
 ### Program to change passwords on selected machines. ###
 ### Send bugs to Claudio Ramirez, nxadm@cpan.org      ###
-###						      ###
+###						                              ###
 #########################################################
 
 ### Pragmas and Modules ###
@@ -18,14 +18,14 @@ use List::MoreUtils ('uniq');
 use App::Unix::RPasswd::UI::Cli;
 
 ### Variables ###
-our $VERSION = '0.34';
+our $VERSION = '0.35';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 my %defaults = (
     ssh => [ 'ssh', '-t' ],    # ssh will be found in the PATH
-    sim     => 5,              # 5 simultanous sessions
-    timeout => 20,
-    runs    => 0,
+    sessions => 5,             # 5 simultanous sessions
+    timeout  => 20,
+    runs     => 0,
 );
 
 ### Main ###
@@ -33,9 +33,9 @@ my %defaults = (
 ### Command Line Interface ###
 my %cli;
 GetOptions(
-    \%cli,          'help|h|?',       'version|v',   'user|u=s',
+    \%cli,          'help|h|?',     'version|v',   'user|u=s',
     'password|p=s', 'base|b=s',     'date|d=i',    'generate_only|g',
-    'sim|s=i',      'ssh_args|a=s', 'timeout|t=i', 'reruns|r=i',
+    'sessions|s=i', 'ssh_args|a=s', 'timeout|t=i', 'reruns|r=i',
     'debug',
   )
   or die "\nInvalid switch. Please read the help page: "
@@ -44,27 +44,25 @@ GetOptions(
 
 my $cmdl =
   App::Unix::RPasswd::UI::Cli->new( args => \%cli, defaults => \%defaults );
-	# check_and_update_params will update %cli
 
 # Help and version status before parameter checking (speed)
 if ( $cli{help}
     or ( !@ARGV and !( grep { defined $_ } values %cli ) ) )
 {
-    say $cmdl->show_help(0);
+    $cmdl->show_help(0);
     exit 0;
 }
 if ( $cli{version} ) {
-    say $cmdl->show_help(1);
+    $cmdl->show_help(1);
     exit 0;
 }
-
 
 # Get servers from @ARGV
 my @servers =
   uniq grep { $_ ne '' } map { s/\s//g; $_ } @ARGV;    # Cleanup serverlist
 
 # Check parameters
-if ( !$cmdl->check_and_update_params(\@servers) ) {
+if ( !$cmdl->check_params( \@servers ) ) {
     for my $msg ( @{ $cmdl->get_messages } ) {
         say $msg;
     }
@@ -85,23 +83,22 @@ else {
 }
 say '_' x 80 . "\n";
 
-
 __END__
 
 =pod
 
 =head1 NAME
 
-rpasswd - Change passwords on UNIX and UNIX-like servers on a simple, 
+App::Unix::RPasswd - Change passwords on UNIX and UNIX-like servers on a simple, 
 fast (in parallel) and secure (SSH) way.
 
 =head1 VERSION
 
-Version 0.34
+Version 0.35
 
 =head1 SYNOPSIS
 
-App::Unix::RPasswd (remote passwd) is an application for changing passwords on UNIX and 
+App::Unix::RPasswd is an application for changing passwords on UNIX and 
 UNIX-like servers on a simple, fast (in parallel) and secure (SSH) way. 
 A salt-based retrievable "random" password generator, tied to the supplied 
 server names and date, is included. 
@@ -121,7 +118,7 @@ the fly. In this case date (optional) and base (mandatory) are valid parameters
 for this mode.
 
 The "generate_only" mode is used to (re-) generate salted passwords. In this 
-mode only date (optional), base (mandatory), sim (optional) and one of more 
+mode only date (optional), base (mandatory), sessions (optional) and one of more 
 servers (mandatory) are valid parameters.
 
 From a security point of view, it is strongly advised to supply '-' as the base
@@ -178,7 +175,8 @@ today).
 =head2 ssh_args | a
 
 This optional parameter sets additional settings for the ssh client (man ssh).
-Quote the argument string (e.g. --ssh_args "-l root").
+If you dont (locally) run the program as root but have root access via 
+ssh-keys you need to use --ssh_args "-l root". Quote the argument string.
 
 =head2 reruns | r
 
@@ -206,11 +204,6 @@ This parameter prints this help screen.
 =head2 version | v
 
 This parameter prints the version number.
-
-
-=head1 AUTHOR
-
-Claudio Ramirez, C<< <nxadm at cpan.org> >>
 
 =head1 BUGS
 

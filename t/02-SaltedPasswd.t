@@ -5,7 +5,7 @@ use App::Unix::RPasswd::SaltedPasswd;
 # if ( $ENV{PATH} =~ /(.+)/ ) { $ENV{PATH} = $1; }    # untaint the var
 my $spasswd = App::Unix::RPasswd::SaltedPasswd->new( salt => '12345678' );
 isa_ok( $spasswd, 'App::Unix::RPasswd::SaltedPasswd' );
-can_ok( $spasswd, ( 'generate' ));
+can_ok( $spasswd, ( 'generate', '_encode_string' ) );
 is( $spasswd->generate('supay19700101supay'),
     'p81liXLlNc7w', 'Generate salted passwords' );
 

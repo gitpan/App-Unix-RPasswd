@@ -7,7 +7,7 @@ use Parallel::ForkManager;
 use App::Unix::RPasswd::Connection;
 use App::Unix::RPasswd::SaltedPasswd;
 
-our $VERSION = '0.34';
+our $VERSION = '0.35';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'args' => (
@@ -79,7 +79,7 @@ sub pexec {
     my @errors;
 
     # Setup forks
-    my $pfm = Parallel::ForkManager->new( $self->args->{sim} );
+    my $pfm = Parallel::ForkManager->new( $self->args->{sessions} );
 
     # Retrieve status
     $pfm->run_on_finish(
@@ -152,11 +152,11 @@ fast (in parallel) and secure (SSH) way.
 
 =head1 VERSION
 
-Version 0.34
+Version 0.35
 
 =head1 SYNOPSIS
 
-App::Unix::RPasswd (remote passwd) is an application for changing passwords on UNIX and 
+App::Unix::RPasswd is an application for changing passwords on UNIX and 
 UNIX-like servers on a simple, fast (in parallel) and secure (SSH) way. 
 A salt-based retrievable "random" password generator, tied to the supplied 
 server names and date, is included. 
@@ -176,7 +176,7 @@ the fly. In this case date (optional) and base (mandatory) are valid parameters
 for this mode.
 
 The "generate_only" mode is used to (re-) generate salted passwords. In this 
-mode only date (optional), base (mandatory), sim (optional) and one of more 
+mode only date (optional), base (mandatory), sessions (optional) and one of more 
 servers (mandatory) are valid parameters.
 
 From a security point of view, it is strongly advised to supply '-' as the base
@@ -233,7 +233,8 @@ today).
 =head2 ssh_args | a
 
 This optional parameter sets additional settings for the ssh client (man ssh).
-Quote the argument string (e.g. --ssh_args "-l root").
+If you dont (locally) run the program as root but have root access via 
+ssh-keys you need to use --ssh_args "-l root". Quote the argument string.
 
 =head2 reruns | r
 
@@ -261,11 +262,6 @@ This parameter prints this help screen.
 =head2 version | v
 
 This parameter prints the version number.
-
-
-=head1 AUTHOR
-
-Claudio Ramirez, C<< <nxadm at cpan.org> >>
 
 =head1 BUGS
 

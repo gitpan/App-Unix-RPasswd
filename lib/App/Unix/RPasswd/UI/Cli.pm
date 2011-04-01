@@ -6,7 +6,7 @@ use Mouse;
 use List::MoreUtils ('uniq');
 use POSIX qw/strftime/;
 
-our $VERSION = '0.34';
+our $VERSION = '0.35';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'args' => (
@@ -33,11 +33,11 @@ has 'messages' => (
 has '_gen_only_options' => (
     is       => 'ro',
     isa      => 'ArrayRef',
-    default  => sub { [ 'base', 'date', 'sim', 'generate_only', 'servers' ] },
+    default  => sub { [ 'base', 'date', 'sessions', 'generate_only', 'servers' ] },
     init_arg => undef,
 );
 
-sub check_and_update_params {
+sub check_params {
 
     # No params
     # Return success (1) or failure (O)
@@ -95,11 +95,11 @@ sub show_help {
     my ( $self, $version_bool ) = @_;
     require File::Basename;
     my $program = File::Basename::basename($0);
-    return $program . ', version ' . $VERSION . '.' if $version_bool;
+    say $program . ', version ' . $VERSION . '.';
+    return if $version_bool;
     my $reruns = $self->defaults->{runs} + 1;
-    return <<"EOL";
-    
-$program, version $VERSION.
+    say <<"EOL";
+
 Change passwords on UNIX and UNIX-like servers on a simple, fast (in parallel)
 and secure (SSH) way. A salt-based retrievable "random" password generator, 
 tied to the supplied server names and date, is included.
@@ -127,14 +127,14 @@ Options:
 The program has two modes. The default mode connects to remote targets and 
 changes the password (optional) of the specified user (mandatory) on the 
 supplied servers (mandatory). Optional valid parameters for this mode are 
-sessions, ssh_args, reruns, timeout and debug. The built-in salted password 
-generator can be used to create unique 'random' passwords for each server on 
-the fly. In this case date (optional) and base (mandatory) are valid parameters 
-for this mode.
+sessions, ssh_args ("-l root" if you don't the application as root), reruns, 
+timeout and debug. The built-in salted password generator can be used to 
+create unique 'random' passwords for each server on the fly. In this case 
+date (optional) and base (mandatory) are valid parameters for this mode.
 
 The "generate_only" mode is used to (re-) generate salted passwords. In this 
-mode only date (optional), base (mandatory), sim (optional) and one of more 
-servers (mandatory) are valid parameters.
+mode only date (optional), base (mandatory), sessions (optional) and one of 
+more servers (mandatory) are valid parameters.
 
 From a security point of view, it is strongly advised to supply '-' as the base
 salt or password on the command line. The program will then ask interactively 

@@ -12,7 +12,9 @@ Revision history for App-Unix-RPasswd
 0.33	20110321
 		- Fix cornercase base == 0.
 		- Fix cornercase servername eq ''.
-0.34	201103XX
+0.34	20110322
+		- Fix esthetics end repport.
 		- Moose->Mouse refactoring (no fast cli response workarounds needed).
 		- New tests
-		- Fix esthetics end repport.
+0.34	20110401
+		- Fix parameter sessions bug.
