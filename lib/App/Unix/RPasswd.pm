@@ -7,7 +7,7 @@ use Parallel::ForkManager;
 use App::Unix::RPasswd::Connection;
 use App::Unix::RPasswd::SaltedPasswd;
 
-our $VERSION = '0.35';
+our $VERSION = '0.40';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'args' => (

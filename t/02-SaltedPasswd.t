@@ -1,5 +1,5 @@
 #!perl -T
-use Test::More tests => 5;
+use Test::More tests => 7;
 use App::Unix::RPasswd::SaltedPasswd;
 
 # if ( $ENV{PATH} =~ /(.+)/ ) { $ENV{PATH} = $1; }    # untaint the var
@@ -14,3 +14,9 @@ is( $spasswd->generate('supay19700101supay'),
     'p81liXLlNc7w', 'Generate salted passwords' );
 isnt( $spasswd->generate('upay19700101supa'),
     'p81liXLlNc7w', 'Generate different salted passwords' );
+
+is($spasswd->_minalpha_conv('abcdefghijklmnopqr'),
+    '7bcdefghijklmnopqr', 'Pass mininimal alpha tests' );
+    
+is($spasswd->_minalpha_conv('zzzzzzzzzzzzzzzzzzzzz'),
+    '5zzzzzzzzzzzzzzzzzzzz', 'Pass mininimal alpha tests' );

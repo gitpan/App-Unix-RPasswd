@@ -16,5 +16,7 @@ Revision history for App-Unix-RPasswd
 		- Fix esthetics end repport.
 		- Moose->Mouse refactoring (no fast cli response workarounds needed).
 		- New tests
-0.34	20110401
+0.35	20110401
 		- Fix parameter sessions bug.
+0.40	20120112
+		- Comply to Solaris 11 minalpha default
