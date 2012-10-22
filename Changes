@@ -20,3 +20,5 @@ Revision history for App-Unix-RPasswd
 		- Fix parameter sessions bug.
 0.40	20120112
 		- Comply to Solaris 11 minalpha default
+0.41	20121022
+		- Bump Module::Install

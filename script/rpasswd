@@ -18,7 +18,7 @@ use List::MoreUtils ('uniq');
 use App::Unix::RPasswd::UI::Cli;
 
 ### Variables ###
-our $VERSION = '0.40';
+our $VERSION = '0.41';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 my %defaults = (
@@ -94,7 +94,7 @@ fast (in parallel) and secure (SSH) way.
 
 =head1 VERSION
 
-Version 0.40
+Version 0.41
 
 =head1 SYNOPSIS
 

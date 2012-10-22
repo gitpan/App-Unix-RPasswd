@@ -6,7 +6,7 @@ use Mouse;
 use List::MoreUtils ('uniq');
 use POSIX qw/strftime/;
 
-our $VERSION = '0.40';
+our $VERSION = '0.41';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'args' => (
