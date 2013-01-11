@@ -7,7 +7,7 @@ use List::MoreUtils ('uniq');
 use POSIX qw/strftime/;
 use Term::ReadKey;
 
-our $VERSION = '0.5';
+our $VERSION = '0.51';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'args' => (

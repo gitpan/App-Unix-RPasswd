@@ -24,4 +24,7 @@ Revision history for App-Unix-RPasswd
 		- Bump Module::Install
 0.5	20130111
 		- Migration to Moo
+		- Pretty print
+0.51	20130111
+		- Typo
 

@@ -7,7 +7,7 @@ use Parallel::ForkManager;
 use App::Unix::RPasswd::Connection;
 use App::Unix::RPasswd::SaltedPasswd;
 
-our $VERSION = '0.5';
+our $VERSION = '0.51';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'args' => (
@@ -150,7 +150,7 @@ fast (in parallel) and secure (SSH) way.
 
 =head1 VERSION
 
-Version 0.35
+Version 0.51
 
 =head1 SYNOPSIS
 

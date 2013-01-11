@@ -6,7 +6,7 @@ use Moo;
 use Crypt::PasswdMD5 ('unix_md5_crypt');
 use List::MoreUtils  ('zip');
 
-our $VERSION = '0.5';
+our $VERSION = '0.51';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'salt' => (
