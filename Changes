@@ -22,3 +22,6 @@ Revision history for App-Unix-RPasswd
 		- Comply to Solaris 11 minalpha default
 0.41	20121022
 		- Bump Module::Install
+0.5	20130111
+		- Migration to Moo
+

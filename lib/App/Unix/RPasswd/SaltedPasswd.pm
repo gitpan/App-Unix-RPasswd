@@ -2,23 +2,23 @@ package App::Unix::RPasswd::SaltedPasswd;
 # This is an internal module of App::Unix::RPasswd
 
 use feature ':5.10';
-use Mouse;
+use Moo;
 use Crypt::PasswdMD5 ('unix_md5_crypt');
 use List::MoreUtils  ('zip');
 
-our $VERSION = '0.41';
+our $VERSION = '0.5';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'salt' => (
     is       => 'ro',
-    isa      => 'Str',
+    #isa      => 'Str',
     required => 1,
 );
 
 has 'minalpha' => ( # Minimum number of alpha character required
     is       => 'ro',
-    isa      => 'Int',
-    default => 2,   # 2 is the default in Solaris 11
+    #isa      => 'Int',
+    default => sub { 2 },   # 2 is the default in Solaris 11
     required => 0,
 );
 
@@ -66,8 +66,6 @@ sub _minalpha_conv {
     return $passwd;
    }
 
-no Mouse;
-__PACKAGE__->meta->make_immutable;
 1;
 
 # Additional properties of generated passwords

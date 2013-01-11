@@ -2,17 +2,17 @@ package App::Unix::RPasswd;
 
 use 5.010000;
 use feature ':5.10';
-use Mouse;
+use Moo;
 use Parallel::ForkManager;
 use App::Unix::RPasswd::Connection;
 use App::Unix::RPasswd::SaltedPasswd;
 
-our $VERSION = '0.41';
+our $VERSION = '0.5';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'args' => (
     is       => 'ro',
-    isa      => 'HashRef',
+    #isa      => 'HashRef',
     required => 1,
 );
 
@@ -132,14 +132,12 @@ sub pexec {
         }
     }
     $pfm->wait_all_children;
-    say "\nRun $run done.\n" . '_' x 80 . "\n";
+    say "\nRun $run done.\n";
     return ( scalar @errors and $run <= $self->args->{reruns} )
       ? $self->pexec(@errors)
       : @errors;    # recursive
 }
 
-no Mouse;
-__PACKAGE__->meta->make_immutable;
 1;
 __END__
 
@@ -317,8 +315,8 @@ L<http://search.cpan.org/dist/Expect/>
 =item * List::MoreUtils
 L<http://search.cpan.org/dist/List-MoreUtils/>
 
-=item * Mouse
-L<http://search.cpan.org/dist/Mouse/>
+=item * Moo
+L<http://search.cpan.org/dist/Moo/>
 
 =item * Parallel::ForkManager
 L<http://search.cpan.org/dist/Parallel-ForkManager/>

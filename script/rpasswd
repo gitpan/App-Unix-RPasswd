@@ -18,7 +18,7 @@ use List::MoreUtils ('uniq');
 use App::Unix::RPasswd::UI::Cli;
 
 ### Variables ###
-our $VERSION = '0.41';
+our $VERSION = '0.5';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 my %defaults = (
@@ -73,7 +73,7 @@ if ( !$cmdl->check_params( \@servers ) ) {
 require App::Unix::RPasswd;
 my $rpasswd = App::Unix::RPasswd->new( args => \%cli );
 my @errors = $rpasswd->pexec(@servers);
-say '_' x 80 . "\n\n";
+say $cmdl->term_line();
 if (@errors) {
     say "The following servers had errors: @errors";
     say 'Please review the output (--debug enables debug information).';
@@ -81,7 +81,7 @@ if (@errors) {
 else {
     say "All targets run successfully.";
 }
-say '_' x 80 . "\n";
+say $cmdl->term_line();
 
 __END__
 
@@ -94,7 +94,7 @@ fast (in parallel) and secure (SSH) way.
 
 =head1 VERSION
 
-Version 0.41
+Version 0.5
 
 =head1 SYNOPSIS
 
@@ -259,8 +259,8 @@ L<http://search.cpan.org/dist/Expect/>
 =item * List::MoreUtils
 L<http://search.cpan.org/dist/List-MoreUtils/>
 
-=item * Mouse
-L<http://search.cpan.org/dist/Mouse/>
+=item * Moo
+L<http://search.cpan.org/dist/Moo/>
 
 =item * Parallel::ForkManager
 L<http://search.cpan.org/dist/Parallel-ForkManager/>

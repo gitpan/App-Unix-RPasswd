@@ -2,21 +2,21 @@ package App::Unix::RPasswd::Connection;
 # This is an internal module of App::Unix::RPasswd
 
 use feature ':5.10';
-use Mouse;
+use Moo;
 use Expect;
 
-our $VERSION = '0.41';
+our $VERSION = '0.5';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'user' => (
     is       => 'ro',
-    isa      => 'Str',
+    #isa      => 'Str',
     required => 1,
 );
 
 has 'ssh_args' => (
     is       => 'ro',
-    isa      => 'ArrayRef[Str]',
+    #isa      => 'ArrayRef[Str]',
     required => 1,
 );
 
@@ -60,6 +60,4 @@ sub _construct_cmd {
     return @command;
 }
 
-no Mouse;
-__PACKAGE__->meta->make_immutable;
 1;

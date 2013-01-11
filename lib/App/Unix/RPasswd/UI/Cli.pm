@@ -2,28 +2,29 @@ package App::Unix::RPasswd::UI::Cli;
 # This is an internal module of App::Unix::RPasswd
 
 use feature ':5.10';
-use Mouse;
+use Moo;
 use List::MoreUtils ('uniq');
 use POSIX qw/strftime/;
+use Term::ReadKey;
 
-our $VERSION = '0.41';
+our $VERSION = '0.5';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'args' => (
     is       => 'ro',
-    isa      => 'HashRef',
+#    isa      => 'HashRef',
     required => 1,
 );
 
 has 'defaults' => (
     is       => 'ro',
-    isa      => 'HashRef',
+#    isa      => 'HashRef',
     required => 1,
 );
 
 has 'messages' => (
     is       => 'rw',
-    isa      => 'ArrayRef',
+#    isa      => 'ArrayRef',
     default  => sub { [] },
     reader   => 'get_messages',
     lazy     => 1,
@@ -32,7 +33,7 @@ has 'messages' => (
 
 has '_gen_only_options' => (
     is       => 'ro',
-    isa      => 'ArrayRef',
+#    isa      => 'ArrayRef',
     default  => sub { [ 'base', 'date', 'sessions', 'generate_only', 'servers' ] },
     init_arg => undef,
 );
@@ -89,6 +90,12 @@ sub check_params {
     }
 # This is an internal module of App::Unix::RPasswd
     return $status;
+}
+
+sub term_line {
+    my $self = shift;
+    my ($wchar) = GetTerminalSize();
+    return "_" x $wchar . "\n";
 }
 
 sub show_help {
@@ -248,6 +255,4 @@ sub _check_main_mode {
     return $status;
 }
 
-no Mouse;
-__PACKAGE__->meta->make_immutable;
 1;

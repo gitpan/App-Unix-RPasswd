@@ -24,9 +24,11 @@ requires:
   Crypt::PasswdMD5: 0
   Expect: 0
   List::MoreUtils: 0
-  Mouse: 0
+  Moo: 0
+  Term::ReadKey: 0
+
   Parallel::ForkManager: 0
   perl: 5.10.0
 resources:
   license: http://opensource.org/licenses/gpl-license.php
-version: 0.41
+version: 0.5
