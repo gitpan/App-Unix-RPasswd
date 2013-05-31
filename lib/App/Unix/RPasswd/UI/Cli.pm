@@ -7,7 +7,7 @@ use List::MoreUtils ('uniq');
 use POSIX qw/strftime/;
 use Term::ReadKey;
 
-our $VERSION = '0.51';
+our $VERSION = '0.52';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'args' => (
@@ -186,7 +186,8 @@ sub _check_gen_only {
     my $self   = shift;
     my $status = 1;
     my @gen_options_provided =
-      grep { !( $_ ~~ @{ $self->_gen_only_options } ) }
+      #grep { !( $_ ~~ @{ $self->_gen_only_options } ) }
+      grep { !( /^$_$/, @{ $self->_gen_only_options } ) }
       keys %{ $self->args };
     for my $key (@gen_options_provided) {
         if ( defined $self->args->{$key} ) {

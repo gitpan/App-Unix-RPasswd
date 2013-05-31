@@ -27,4 +27,5 @@ Revision history for App-Unix-RPasswd
 		- Pretty print
 0.51	20130111
 		- Typo
-
+0.52	20130530
+		- Pass Perl 5.18.0 tests
