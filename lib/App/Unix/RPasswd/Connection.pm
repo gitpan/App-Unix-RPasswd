@@ -5,7 +5,7 @@ use feature ':5.10';
 use Moo;
 use Expect;
 
-our $VERSION = '0.52';
+our $VERSION = '0.53';
 our $AUTHOR  = 'Claudio Ramirez <nxadm@cpan.org>';
 
 has 'user' => (
@@ -55,7 +55,7 @@ sub _construct_cmd {
     my ( $self, $server ) = @_;
     my @command = (
         @{ $self->ssh_args },
-        $server, '/usr/bin/passwd', '-r', 'files', $self->user
+        $server, '/usr/bin/passwd', $self->user
     );
     return @command;
 }

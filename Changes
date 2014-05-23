@@ -29,3 +29,5 @@ Revision history for App-Unix-RPasswd
 		- Typo
 0.52	20130530
 		- Pass Perl 5.18.0 tests
+0.53	20140523
+		- Removal of Solaris specific "passwd -r files" syntax
